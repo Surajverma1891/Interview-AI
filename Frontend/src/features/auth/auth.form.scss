@@ -1,0 +1,64 @@
+/** @format */
+
+main {
+  min-height: 100vh;
+  width: 100%;
+  //  https://grabient.com/HQDgDGA0wEwdA2ewlWAFmeNm2unGgMxFR4DsUAtMKetAKwwPTrlGRUCMwEYQA?angle=180&steps=10
+
+  /* https://grabient.com/HQDgDGA0wEwdA2ewlWAFmeNm2unGgMxFR4DsUAtMKetAKwwOIMtUCMwEYQA?angle=180&steps=10 */
+
+/* https://grabient.com/HQFgnAbANAtMCMAGEVgCZKooxqQ9QA4DQTtd0SBmK3CiAdlzkSdQFZC0i1oZ5gOREA?angle=180&steps=10 */
+
+background: linear-gradient(180deg, #420f00 0.000%, #310b0d 11.111%, #23011a 22.222%, #1a0027 33.333%, #150035 44.444%, #140042 55.556%, #180050 66.667%, #21005d 77.778%, #2d006a 88.889%, #3d0076 100.000%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .form-container {
+    min-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size :large;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .reg-con{
+    display: flex;
+    flex-direction: row;
+  }
+  .reg:hover{
+    color: #23011a;
+  }
+  
+  .login{
+    display: flex;
+    justify-content: center;
+    align-self: center;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.5rem;
+
+    input {
+      border: none;
+      outline: none;
+      padding-inline: 1rem;
+      padding-block: 0.75rem;
+      border-radius: 0.75rem;
+    }
+  }
+
+  a {
+    color: #e1034d;
+    text-decoration: none;
+  }
+}
