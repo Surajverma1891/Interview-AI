@@ -15,6 +15,22 @@ export const useInterview = () => {
 
     const { loading, setLoading, report, setReport, reports, setReports } = context
 
+    const extractErrorMessage = async (error, fallbackMessage) => {
+        const responseData = error?.response?.data
+
+        if (responseData instanceof Blob) {
+            try {
+                const text = await responseData.text()
+                const parsed = JSON.parse(text)
+                return parsed.message || fallbackMessage
+            } catch (parseError) {
+                return fallbackMessage
+            }
+        }
+
+        return responseData?.message || error?.message || fallbackMessage
+    }
+
     const generateReport = async ({ jobDescription, selfDescription, resumeFile }) => {
     setLoading(true)
     try {
@@ -71,9 +87,12 @@ export const useInterview = () => {
             link.setAttribute("download", `resume_${interviewReportId}.pdf`)
             document.body.appendChild(link)
             link.click()
+            link.remove()
+            window.URL.revokeObjectURL(url)
         }
         catch (error) {
             console.log(error)
+            alert(await extractErrorMessage(error, "Resume download failed"))
         } finally {
             setLoading(false)
         }

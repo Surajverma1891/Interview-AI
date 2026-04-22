@@ -1,6 +1,17 @@
-const pdfParse = require("pdf-parse");
+const { PDFParse } = require("pdf-parse");
 const { generateInterviewReport, generateResumePdf } = require("../services/ai.service");
 const interviewReportModel = require("../models/interviewReport.model");
+
+async function extractPdfText(buffer) {
+    const parser = new PDFParse({ data: buffer });
+
+    try {
+        const pdfData = await parser.getText();
+        return pdfData.text?.trim() || "";
+    } finally {
+        await parser.destroy();
+    }
+}
 
 /**
  * @description Generate interview report based on PDF resume and descriptions.
@@ -20,8 +31,20 @@ async function generateInterViewReportController(req, res) {
         let resumeText = "";
 
         if (req.file) {
-            const pdfData = await pdfParse(req.file.buffer);
-            resumeText = pdfData.text;
+            try {
+                resumeText = await extractPdfText(req.file.buffer);
+            } catch (error) {
+                console.error("PDF parsing error:", error);
+                return res.status(400).json({
+                    message: "Uploaded PDF ko read nahi kiya ja saka. Please text-based PDF upload karein."
+                });
+            }
+
+            if (!resumeText) {
+                return res.status(400).json({
+                    message: "PDF me readable text nahi mila. Please text-based PDF upload karein."
+                });
+            }
         }
 
         const interViewReportByAi = await generateInterviewReport({
@@ -88,7 +111,10 @@ async function getAllInterviewReportsController(req, res) {
 async function generateResumePdfController(req, res) {
     try {
         const { interviewReportId } = req.params;
-        const interviewReport = await interviewReportModel.findById(interviewReportId);
+        const interviewReport = await interviewReportModel.findOne({
+            _id: interviewReportId,
+            user: req.user.id
+        });
 
         if (!interviewReport) {
             return res.status(404).json({ message: "Interview report not found." });
@@ -104,7 +130,8 @@ async function generateResumePdfController(req, res) {
 
         res.send(pdfBuffer);
     } catch (err) {
-        res.status(500).json({ message: "PDF generation failed." });
+        console.error("Resume PDF generation error:", err);
+        res.status(500).json({ message: err.message || "PDF generation failed." });
     }
 }
 

@@ -3,17 +3,61 @@ import "../style/home.scss"
 import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router'
 
+const MAX_RESUME_SIZE = 10 * 1024 * 1024
+
 const Home = () => {
 
     const { loading, generateReport,reports } = useInterview()
     const [ jobDescription, setJobDescription ] = useState("")
     const [ selfDescription, setSelfDescription ] = useState("")
+    const [ resumeFile, setResumeFile ] = useState(null)
     const resumeInputRef = useRef()
 
     const navigate = useNavigate()
 
+    const formatFileSize = (fileSize) => {
+        if (fileSize < 1024 * 1024) {
+            return `${Math.round(fileSize / 1024)} KB`
+        }
+
+        return `${(fileSize / (1024 * 1024)).toFixed(1)} MB`
+    }
+
+    const resetResumeSelection = () => {
+        setResumeFile(null)
+
+        if (resumeInputRef.current) {
+            resumeInputRef.current.value = ""
+        }
+    }
+
+    const handleResumeChange = (event) => {
+        const selectedFile = event.target.files?.[0]
+
+        if (!selectedFile) {
+            return
+        }
+
+        const isPdf =
+            selectedFile.type === "application/pdf" ||
+            selectedFile.name.toLowerCase().endsWith(".pdf")
+
+        if (!isPdf) {
+            alert("Sirf PDF file upload kar sakte hain.")
+            resetResumeSelection()
+            return
+        }
+
+        if (selectedFile.size > MAX_RESUME_SIZE) {
+            alert("PDF size 10MB se zyada nahi honi chahiye.")
+            resetResumeSelection()
+            return
+        }
+
+        setResumeFile(selectedFile)
+    }
+
     const handleGenerateReport = async () => {
-    const resumeFile = resumeInputRef.current?.files?.[0]
     const data = await generateReport({ jobDescription, selfDescription, resumeFile })
 
     if (data?._id) {
@@ -75,26 +119,56 @@ const Home = () => {
                         {/* Upload Resume */}
                         <div className='upload-section'>
                             <label className='section-label'>
-                                Upload Resume
-                                <span className='badge badge--best'>Best Results</span>
-                            </label>
-                            <label className='dropzone' htmlFor='resume'>
-                                <span className='dropzone__icon'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 16 12 12 8 16" /><line x1="12" y1="12" x2="12" y2="21" /><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" /></svg>
+                                {resumeFile ? "Resume Uploaded" : "Upload Resume"}
+                                <span className={`badge ${resumeFile ? 'badge--success' : 'badge--best'}`}>
+                                    {resumeFile ? 'Uploaded' : 'Best Results'}
                                 </span>
-                                <p className='dropzone__title'>Click to upload or drag &amp; drop</p>
-                                <p className='dropzone__subtitle'>PDF only (Max 10MB)</p>
-                                <input ref={resumeInputRef} hidden type='file' id='resume' name='resume' accept='.pdf' />
-
                             </label>
+                            {resumeFile ? (
+                                <div className='uploaded-file'>
+                                    <div className='uploaded-file__icon'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><path d="m9 15 2 2 4-4" /></svg>
+                                    </div>
+                                    <div className='uploaded-file__content'>
+                                        <p className='uploaded-file__title'>{resumeFile.name}</p>
+                                        <p className='uploaded-file__meta'>{formatFileSize(resumeFile.size)} • PDF ready for analysis</p>
+                                    </div>
+                                    <button
+                                        type='button'
+                                        className='uploaded-file__remove'
+                                        onClick={resetResumeSelection}
+                                    >
+                                        Remove
+                                    </button>
+                                </div>
+                            ) : (
+                                <label className='dropzone' htmlFor='resume'>
+                                    <span className='dropzone__icon'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 16 12 12 8 16" /><line x1="12" y1="12" x2="12" y2="21" /><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" /></svg>
+                                    </span>
+                                    <p className='dropzone__title'>Click to upload or drag &amp; drop</p>
+                                    <p className='dropzone__subtitle'>PDF only (Max 10MB)</p>
+                                    <input
+                                        ref={resumeInputRef}
+                                        hidden
+                                        type='file'
+                                        id='resume'
+                                        name='resume'
+                                        accept='application/pdf,.pdf'
+                                        onChange={handleResumeChange}
+                                    />
+                                </label>
+                            )}
                         </div>
 
                         {/* OR Divider */}
-                        <div className='or-divider'><span>OR</span></div>
+                        <div className='or-divider'><span>{resumeFile ? 'Optional' : 'OR'}</span></div>
 
                         {/* Quick Self-Description */}
                         <div className='self-description'>
-                            <label className='section-label' htmlFor='selfDescription'>Quick Self-Description</label>
+                            <label className='section-label' htmlFor='selfDescription'>
+                                {resumeFile ? 'Add Extra Self-Description' : 'Quick Self-Description'}
+                            </label>
                             <textarea
                                 onChange={(e) => { setSelfDescription(e.target.value) }}
                                 id='selfDescription'

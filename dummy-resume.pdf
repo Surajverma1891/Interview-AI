@@ -1,0 +1,131 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1950 >>
+stream
+BT
+/F1 20 Tf
+1 0 0 1 72 750 Tm
+(Ananya Sharma) Tj
+ET
+BT
+/F1 12 Tf
+1 0 0 1 72 722 Tm
+(Frontend Developer) Tj
+ET
+BT
+/F1 10 Tf
+1 0 0 1 72 706 Tm
+(Email: ananya.sharma@example.com | Phone: +91 98765 43210 | Gurgaon, India) Tj
+ET
+BT
+/F1 13 Tf
+1 0 0 1 72 690 Tm
+(SUMMARY) Tj
+ET
+BT
+/F1 10 Tf
+1 0 0 1 72 668 Tm
+(Frontend developer with 3 years of experience building React, JavaScript, and responsive web apps.) Tj
+ET
+BT
+/F1 10 Tf
+1 0 0 1 72 652 Tm
+(Skilled in API integration, UI debugging, and improving user flows for hiring and interview products.) Tj
+ET
+BT
+/F1 13 Tf
+1 0 0 1 72 636 Tm
+(SKILLS) Tj
+ET
+BT
+/F1 10 Tf
+1 0 0 1 72 614 Tm
+(React, JavaScript, HTML, CSS, Sass, Node.js, Express, MongoDB, Git, REST APIs) Tj
+ET
+BT
+/F1 13 Tf
+1 0 0 1 72 598 Tm
+(EXPERIENCE) Tj
+ET
+BT
+/F1 10 Tf
+1 0 0 1 72 576 Tm
+(Frontend Developer | BrightHire Labs | Jan 2023 - Present) Tj
+ET
+BT
+/F1 10 Tf
+1 0 0 1 72 560 Tm
+(Built interview preparation dashboards in React and integrated backend APIs for report generation.) Tj
+ET
+BT
+/F1 10 Tf
+1 0 0 1 72 544 Tm
+(Improved resume upload UX with file validation and clearer uploaded state in the client app.) Tj
+ET
+BT
+/F1 10 Tf
+1 0 0 1 72 528 Tm
+(Collaborated with backend engineers to debug PDF parsing and authentication issues.) Tj
+ET
+BT
+/F1 10 Tf
+1 0 0 1 72 512 Tm
+(Software Engineer Intern | SkillBridge Tech | Jul 2022 - Dec 2022) Tj
+ET
+BT
+/F1 10 Tf
+1 0 0 1 72 496 Tm
+(Developed reusable UI components and fixed routing bugs in a React single page application.) Tj
+ET
+BT
+/F1 13 Tf
+1 0 0 1 72 480 Tm
+(EDUCATION) Tj
+ET
+BT
+/F1 10 Tf
+1 0 0 1 72 458 Tm
+(B.Tech in Computer Science | Maharshi Dayanand University | 2022) Tj
+ET
+BT
+/F1 13 Tf
+1 0 0 1 72 442 Tm
+(PROJECTS) Tj
+ET
+BT
+/F1 10 Tf
+1 0 0 1 72 420 Tm
+(Interview AI Web App: Resume analysis, interview planning, report generation, and PDF export workflow.) Tj
+ET
+BT
+/F1 10 Tf
+1 0 0 1 72 404 Tm
+(Portfolio Website: Personal portfolio with responsive layout and contact form.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000002243 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2313
+%%EOF

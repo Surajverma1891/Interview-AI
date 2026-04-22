@@ -1,3 +1,4 @@
+const fs = require("fs");
 const { GoogleGenAI } = require("@google/genai");
 const { z } = require("zod");
 const { zodToJsonSchema } = require("zod-to-json-schema");
@@ -56,23 +57,53 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
     }
 }
 
+function getBrowserExecutablePath() {
+    const candidatePaths = [
+        process.env.PUPPETEER_EXECUTABLE_PATH,
+        "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+        "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+        "C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe",
+        "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+    ].filter(Boolean);
+
+    return candidatePaths.find((candidatePath) => fs.existsSync(candidatePath)) || null;
+}
+
 async function generatePdfFromHtml(htmlContent) {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+    const executablePath = getBrowserExecutablePath();
+    let browser;
 
-    const pdfBuffer = await page.pdf({
-        format: "A4", 
-        margin: {
-            top: "20mm",
-            bottom: "20mm",
-            left: "15mm",
-            right: "15mm"
+    try {
+        browser = await puppeteer.launch({
+            headless: true,
+            executablePath: executablePath || undefined
+        });
+
+        const page = await browser.newPage();
+        await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+
+        const pdfBuffer = await page.pdf({
+            format: "A4", 
+            margin: {
+                top: "20mm",
+                bottom: "20mm",
+                left: "15mm",
+                right: "15mm"
+            }
+        });
+
+        return Buffer.from(pdfBuffer);
+    } catch (error) {
+        if (!executablePath) {
+            throw new Error("No Chrome or Edge browser found for PDF generation.");
         }
-    });
 
-    await browser.close();
-    return pdfBuffer;
+        throw error;
+    } finally {
+        if (browser) {
+            await browser.close();
+        }
+    }
 }
 
 async function generateResumePdf({ resume, selfDescription, jobDescription }) {
