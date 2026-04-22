@@ -7,33 +7,33 @@ const interviewReportModel = require("../models/interviewReport.model");
  */
 async function generateInterViewReportController(req, res) {
     try {
-        // 1. Check if file exists
-        if (!req.file) {
-            return res.status(400).json({ message: "Resume file missing hai bhai!" });
-        }
-
         const { selfDescription, jobDescription } = req.body;
-        if (!selfDescription || !jobDescription) {
-            return res.status(400).json({ message: "Self Description aur Job Description zaroori hai." });
+
+        if (!jobDescription) {
+            return res.status(400).json({ message: "Job description is required." });
         }
 
-        // 2. FIXED: PDF Parsing logic
-        // pdfParse ek function hai, ise 'new' ke saath mat likhna
-        const pdfData = await pdfParse(req.file.buffer);
-        const resumeText = pdfData.text;
+        if (!req.file && !selfDescription) {
+            return res.status(400).json({ message: "Resume ya self description me se ek required hai." });
+        }
 
-        // 3. AI Service call
+        let resumeText = "";
+
+        if (req.file) {
+            const pdfData = await pdfParse(req.file.buffer);
+            resumeText = pdfData.text;
+        }
+
         const interViewReportByAi = await generateInterviewReport({
             resume: resumeText,
-            selfDescription,
+            selfDescription: selfDescription || "",
             jobDescription
         });
 
-        // 4. Save to DB
         const interviewReport = await interviewReportModel.create({
             user: req.user.id,
             resume: resumeText,
-            selfDescription,
+            selfDescription: selfDescription || "",
             jobDescription,
             ...interViewReportByAi
         });
@@ -48,6 +48,7 @@ async function generateInterViewReportController(req, res) {
         res.status(500).json({ message: "Server error during processing", error: err.message });
     }
 }
+
 
 /**
  * @description Get interview report by ID
