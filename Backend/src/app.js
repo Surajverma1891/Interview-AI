@@ -2,15 +2,38 @@ const express = require("express")
 const cookieParser = require("cookie-parser")
 const cors = require("cors")
 const multer = require("multer")
+const mongoose = require("mongoose")
 
 const app = express()
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    process.env.CLIENT_URL
+].filter(Boolean)
+
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true)
+        }
+
+        return callback(new Error("CORS origin not allowed"))
+    },
+    credentials: true
+}
+
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true
-}))
+app.use(cors(corsOptions))
+
+app.get("/healthz", (req, res) => {
+    const isDatabaseConnected = mongoose.connection.readyState === 1
+
+    res.status(isDatabaseConnected ? 200 : 503).json({
+        status: isDatabaseConnected ? "ok" : "degraded",
+        database: isDatabaseConnected ? "connected" : "disconnected"
+    })
+})
 
 /* require all the routes here */
 const authRouter = require("./routes/auth.routes")
@@ -37,6 +60,12 @@ app.use((err, req, res, next) => {
     if (err?.message === "Only PDF files allowed") {
         return res.status(400).json({
             message: "Sirf PDF file upload kar sakte hain."
+        })
+    }
+
+    if (err?.message === "CORS origin not allowed") {
+        return res.status(403).json({
+            message: "Request blocked due to CORS policy."
         })
     }
 
