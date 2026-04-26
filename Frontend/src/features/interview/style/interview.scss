@@ -477,3 +477,445 @@ $severity-low: #3fb950;
         border-color: rgba($severity-low, 0.25);
     }
 }
+
+
+// ── Mobile Responsive ─────────────────────────────────────────────────────────
+@media (max-width: 1024px) {
+    .interview-page {
+        padding: 1rem;
+    }
+
+    .interview-layout {
+        max-width: 100%;
+    }
+
+    .interview-nav {
+        width: 180px;
+        padding: 1.5rem 0.75rem;
+
+        &__item {
+            font-size: 0.8rem;
+            padding: 0.55rem 0.6rem;
+        }
+
+        &__label {
+            padding: 0 0.5rem;
+            font-size: 0.65rem;
+        }
+    }
+
+    .interview-content {
+        padding: 1.5rem 1.5rem;
+        max-height: calc(100vh - 2rem);
+    }
+
+    .interview-sidebar {
+        width: 200px;
+        padding: 1.5rem 1rem;
+        gap: 1rem;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .interview-page {
+        padding: 0.75rem;
+        align-items: flex-start;
+    }
+
+    .interview-layout {
+        flex-direction: column;
+        max-width: 100%;
+        border-radius: 0.75rem;
+    }
+
+    .interview-nav {
+        width: 100%;
+        padding: 1rem;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        border-bottom: 1px solid $border-color;
+
+        &__label {
+            display: none;
+        }
+
+        &__item {
+            flex: 0 1 auto;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+    }
+
+    .interview-divider:first-of-type {
+        display: none;
+    }
+
+    .interview-content {
+        flex: 1;
+        padding: 1rem 1rem;
+        max-height: auto;
+        padding-bottom: 2rem;
+    }
+
+    .content-header {
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+
+        h2 {
+            font-size: 1rem;
+        }
+
+        &__count {
+            font-size: 0.7rem;
+            padding: 0.1rem 0.5rem;
+        }
+    }
+
+    .q-list {
+        gap: 0.6rem;
+    }
+
+    .q-card {
+        border-radius: 0.5rem;
+
+        &__header {
+            gap: 0.5rem;
+            padding: 0.75rem 0.85rem;
+        }
+
+        &__index {
+            font-size: 0.65rem;
+            padding: 0.12rem 0.35rem;
+        }
+
+        &__question {
+            font-size: 0.85rem;
+        }
+
+        &__body {
+            padding: 0 0.85rem 0.85rem;
+            padding-top: 0.6rem;
+            gap: 0.6rem;
+        }
+
+        &__section {
+            gap: 0.3rem;
+
+            p {
+                font-size: 0.8rem;
+            }
+        }
+
+        &__tag {
+            font-size: 0.65rem;
+            padding: 0.12rem 0.4rem;
+        }
+    }
+
+    .roadmap-day {
+        padding: 0.6rem 0 0.6rem 2.8rem;
+
+        &::before {
+            left: 16px;
+            top: 0.8rem;
+            width: 12px;
+            height: 12px;
+        }
+
+        &__header {
+            gap: 0.5rem;
+        }
+
+        &__badge {
+            font-size: 0.65rem;
+            padding: 0.08rem 0.4rem;
+        }
+
+        &__focus {
+            font-size: 0.9rem;
+        }
+
+        &__tasks {
+            gap: 0.3rem;
+
+            li {
+                font-size: 0.8rem;
+            }
+        }
+
+        &__bullet {
+            margin-top: 6px;
+        }
+    }
+
+    .roadmap-list::before {
+        left: 22px;
+    }
+
+    .interview-divider:last-of-type {
+        display: none;
+    }
+
+    .interview-sidebar {
+        width: 100%;
+        padding: 1rem;
+        flex-direction: row;
+        gap: 1rem;
+        justify-content: space-around;
+        border-top: 1px solid $border-color;
+        flex-wrap: wrap;
+    }
+
+    .sidebar-divider {
+        display: none;
+    }
+
+    .match-score {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 0 1 auto;
+
+        &__label {
+            font-size: 0.7rem;
+            align-self: center;
+        }
+
+        &__ring {
+            width: 75px;
+            height: 75px;
+            border-width: 3px;
+        }
+
+        &__value {
+            font-size: 1.4rem;
+        }
+
+        &__pct {
+            font-size: 0.7rem;
+        }
+
+        &__sub {
+            font-size: 0.7rem;
+        }
+    }
+
+    .skill-gaps {
+        flex: 1 1 100%;
+        gap: 0.6rem;
+
+        &__label {
+            font-size: 0.7rem;
+        }
+
+        &__list {
+            gap: 0.4rem;
+        }
+    }
+
+    .skill-tag {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.6rem;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .interview-page {
+        padding: 0.5rem;
+        min-height: auto;
+    }
+
+    .interview-layout {
+        flex-direction: column;
+        border-radius: 0.5rem;
+    }
+
+    .interview-nav {
+        padding: 0.75rem;
+        gap: 0.4rem;
+        border-bottom: 1px solid $border-color;
+        overflow-x: auto;
+
+        &__item {
+            flex: 0 0 auto;
+            padding: 0.45rem 0.6rem;
+            font-size: 0.7rem;
+            gap: 0.3rem;
+        }
+
+        &__icon {
+            display: none;
+        }
+    }
+
+    .interview-content {
+        padding: 0.75rem;
+        padding-bottom: 1.5rem;
+
+        section {
+            min-height: auto;
+        }
+    }
+
+    .content-header {
+        gap: 0.35rem;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.6rem;
+
+        h2 {
+            font-size: 0.9rem;
+        }
+
+        &__count {
+            font-size: 0.65rem;
+            padding: 0.08rem 0.4rem;
+        }
+    }
+
+    .q-list {
+        gap: 0.5rem;
+    }
+
+    .q-card {
+        &__header {
+            gap: 0.4rem;
+            padding: 0.65rem 0.75rem;
+        }
+
+        &__index {
+            font-size: 0.6rem;
+            padding: 0.1rem 0.3rem;
+        }
+
+        &__question {
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        &__chevron {
+            width: 16px;
+            height: 16px;
+        }
+
+        &__body {
+            padding: 0 0.75rem 0.75rem;
+            padding-top: 0.5rem;
+            gap: 0.5rem;
+        }
+
+        &__section {
+            gap: 0.25rem;
+
+            p {
+                font-size: 0.75rem;
+                line-height: 1.5;
+            }
+        }
+
+        &__tag {
+            font-size: 0.6rem;
+            padding: 0.1rem 0.35rem;
+        }
+    }
+
+    .roadmap-day {
+        padding: 0.5rem 0 0.5rem 2.3rem;
+
+        &::before {
+            left: 13px;
+            top: 0.7rem;
+            width: 10px;
+            height: 10px;
+        }
+
+        &__header {
+            gap: 0.4rem;
+        }
+
+        &__badge {
+            font-size: 0.6rem;
+            padding: 0.07rem 0.35rem;
+        }
+
+        &__focus {
+            font-size: 0.85rem;
+        }
+
+        &__tasks {
+            gap: 0.25rem;
+
+            li {
+                font-size: 0.75rem;
+                line-height: 1.4;
+            }
+        }
+
+        &__bullet {
+            width: 4px;
+            height: 4px;
+            margin-top: 5px;
+        }
+    }
+
+    .roadmap-list::before {
+        left: 19px;
+    }
+
+    .interview-sidebar {
+        padding: 0.75rem;
+        gap: 0.75rem;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .match-score {
+        gap: 0.35rem;
+
+        &__label {
+            font-size: 0.65rem;
+        }
+
+        &__ring {
+            width: 65px;
+            height: 65px;
+            border-width: 2px;
+        }
+
+        &__value {
+            font-size: 1.2rem;
+        }
+
+        &__pct {
+            font-size: 0.65rem;
+            margin-top: -1px;
+        }
+
+        &__sub {
+            font-size: 0.65rem;
+        }
+    }
+
+    .skill-gaps {
+        flex: 1 1 100%;
+        gap: 0.5rem;
+
+        &__label {
+            font-size: 0.65rem;
+        }
+
+        &__list {
+            gap: 0.35rem;
+        }
+    }
+
+    .skill-tag {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.5rem;
+    }
+}
