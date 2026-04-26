@@ -3,10 +3,32 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const tokenBlacklistModel = require("../models/blacklist.model")
 
-function getCookieOptions() {
-    const useSecureCookie =
-        process.env.NODE_ENV === "production" ||
-        process.env.CLIENT_URL?.startsWith("https://")
+function shouldUseSecureCookie(req) {
+    const forwardedProto = req.headers["x-forwarded-proto"]?.split(",")[0]?.trim()
+
+    if (forwardedProto) {
+        return forwardedProto === "https"
+    }
+
+    if (req.secure) {
+        return true
+    }
+
+    const requestOrigin = req.headers.origin
+
+    if (typeof requestOrigin === "string") {
+        try {
+            return new URL(requestOrigin).protocol === "https:"
+        } catch (error) {
+            return process.env.NODE_ENV === "production"
+        }
+    }
+
+    return process.env.NODE_ENV === "production"
+}
+
+function getCookieOptions(req) {
+    const useSecureCookie = shouldUseSecureCookie(req)
 
     return {
         httpOnly: true,
@@ -30,7 +52,7 @@ async function registerUserController(req, res) {
         const hash = await bcrypt.hash(password, 10)
         const user = await userModel.create({ username, email, password: hash })
         const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: "1d" })
-        res.cookie("token", token, getCookieOptions())
+        res.cookie("token", token, getCookieOptions(req))
         res.status(201).json({ message: "User registered successfully", user: { id: user._id, username, email } })
     } catch (err) {
         res.status(500).json({ message: "Server error" })
@@ -70,7 +92,7 @@ async function loginUserController(req, res) {
             { expiresIn: "1d" }
         );
 
-        res.cookie("token", token, getCookieOptions());
+        res.cookie("token", token, getCookieOptions(req));
         return res.status(200).json({
             message: "User loggedIn successfully.",
             token,
@@ -90,7 +112,7 @@ async function logoutUserController(req, res) {
         if (token) {
             await tokenBlacklistModel.create({ token })
         }
-        const { maxAge, ...clearCookieOptions } = getCookieOptions()
+        const { maxAge, ...clearCookieOptions } = getCookieOptions(req)
         res.clearCookie("token", clearCookieOptions)
         res.status(200).json({ message: "User logged out successfully" })
     } catch (err) {

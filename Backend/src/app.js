@@ -5,15 +5,44 @@ const multer = require("multer")
 const mongoose = require("mongoose")
 
 const app = express()
+app.set("trust proxy", 1)
 
-const allowedOrigins = [
-    "http://localhost:5173",
-    process.env.CLIENT_URL
-].filter(Boolean)
+function normalizeOrigin(value) {
+    return typeof value === "string" ? value.trim().replace(/\/$/, "") : ""
+}
+
+function getConfiguredOrigins() {
+    return Array.from(new Set([
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:4173",
+        "http://127.0.0.1:4173",
+        process.env.CLIENT_URL,
+        ...(process.env.CLIENT_URLS || "").split(",")
+    ]
+        .map(normalizeOrigin)
+        .filter(Boolean)))
+}
+
+function isAllowedOrigin(origin) {
+    const normalizedOrigin = normalizeOrigin(origin)
+
+    if (!normalizedOrigin) {
+        return true
+    }
+
+    const allowedOrigins = getConfiguredOrigins()
+
+    if (allowedOrigins.includes(normalizedOrigin)) {
+        return true
+    }
+
+    return /^https:\/\/interview-ai(?:[-a-z0-9]+)?\.vercel\.app$/i.test(normalizedOrigin)
+}
 
 const corsOptions = {
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (isAllowedOrigin(origin)) {
             return callback(null, true)
         }
 
