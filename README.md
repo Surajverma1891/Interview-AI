@@ -14,9 +14,3 @@ An AI-powered mock interview platform built with the **MERN Stack** and **Google
 - **Database:** MongoDB Atlas
 - **AI Integration:** Google Gemini Pro API
 - **Auth:** Clerk / JWT (jo bhi aap use kar rahe ho)
-
-## 📦 Installation & Setup
-
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/Surajverma1891/Interview-AI.git](https://github.com/Surajverma1891/Interview-AI.git)
